@@ -1,0 +1,6 @@
+#Header{
+    background-color: black;
+    padding: 10px; /* dar espacio entre el contenido de un elemento y su borde*/
+    text-align: center; /*centrar el texto*/
+    color: white;
+}
