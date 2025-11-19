@@ -1,9 +1,0 @@
-.Footer{
-    background-color: rgb(172, 43, 43);
-    bottom: 0; /* lo coloca en la parte más baja*/
-    left: 0; /* lo ajusta al borde izquierdo*/
-    width: 100%; /* ocupa todo el ancho*/
-    color: white;
-    text-align: center; /* centra el texto*/
-    padding: 10xp;
-}
