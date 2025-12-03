@@ -18,15 +18,15 @@ function IncidentList(props) {
                 </thead> 
                 <tbody>
                     {props.incidencias.map((i) => (
-                            <tr key={i.id_incidencia} className="table-light">
+                            <tr key={i.id} className="table-light">
                                 {/*Cada propiedad es una celda <td>*/}
-                                <td>{i.id_incidencia}</td>
+                                <td>{i.id}</td>
                                 <td>{i.titulo}</td>
                                 <td>{i.nivel_urgencia}</td>
                                 <td>{i.estado}</td>
                                 <td>{i.descripcion}</td>
                                 <td>{i.ubicacion}</td>
-                                <td>{i.id_usuario}</td>
+                                <td>{i.usuario.email}</td>
                                 <td>{i.fecha_registro}</td>
                             </tr>
                         ))

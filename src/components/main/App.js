@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import IncidentList from '../IncidentList';
@@ -7,138 +7,89 @@ import Foto from '../../img/Incidencias.png';
 
 
 function App () {
- const [incidencias, setIncidencia] = useState( [
-     {
-            id_incidencia: 1,
-            id_usuario: "Pedro",
-            titulo: "Proyector averiado en el aula 2",
-            descripcion: "Proyector averiado en el aula 2",
-            categoria: "Hardware",
-            nivel_urgencia: "Media",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B205"
-        },
-
-        {
-            id_incidencia: 2,
-            id_usuario: "Lara",
-            titulo: "Impresora sin conexión",
-            descripcion: "Impresora sin conexión",
-            categoria: "Hardware",
-            nivel_urgencia: "Alta",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B104"
-        },
-
-        {
-            id_incidencia: 3,
-            id_usuario: "Sara",
-            titulo: "Ordenador de secretaría no enciende",
-            descripcion: "Ordenador de secretaría no enciende",
-            categoria: "Hardware",
-            nivel_urgencia: "Alta",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "Secretaria"
-        },
-
-        {
-            id_incidencia: 4,
-            id_usuario: "Naty",
-            titulo: "Wifi no disponible",
-            descripcion: "Wifi no disponible",
-            categoria: "Conectividad",
-            nivel_urgencia: "Alta",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B204"
-        },
-        
-        {
-            id_incidencia: 5,
-            id_usuario: "Merche",
-            titulo: "Pantalla táctil no responde",
-            descripcion: "Pantalla táctil no responde",
-            categoria: "Hardware",
-            nivel_urgencia: "Baja",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B204"
-        },
-
-        {
-            id_incidencia: 6,
-            id_usuario: "José",
-            titulo: "Ratón y teclado dañados",
-            descripcion: "Ratón y teclado dañados",
-            categoria: "Hardware",
-            nivel_urgencia: "Alta",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B204"
-        },
-
-        {
-            id_incidencia: 7,
-            id_usuario: "María",
-            titulo: "Altavoces sin sonido",
-            descripcion: "Altavoces sin sonido",
-            categoria: "Hardware",
-            nivel_urgencia: "Media",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B204"
-        },
-
-        {
-            id_incidencia: 8,
-            id_usuario: "Blanca",
-            titulo: "Servidor se reinicia",
-            descripcion: "Servidor se reinicia",
-            categoria: "Conectividad",
-            nivel_urgencia: "Alta",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B104"
-        },
-
-         {
-            id_incidencia: 9,
-            id_usuario: "Carolina",
-            titulo: "Cable HDMI roto",
-            descripcion: "Cable HDMI roto",
-            categoria: "Hardware",
-            nivel_urgencia: "Baja",
-            fecha_registro: "2025-10-20",
-            estado: "Abierta",
-            ubicacion: "B104"
+const [usuarios,setUsuarios] = useState([])
+const [incidencias, setIncidencia] = useState( [])
+//Definir la Url de la API para las incidencias(si JSON se ejecuta en el puerto 3004)
+const INCIDENCIA_API_URL =  'http://localhost:3004/incidencias';
+//Definir la Url de la API para los usuarios(si JSON se ejecuta en el puerto 3004)
+const USUARIO_API_URL =  'http://localhost:3004/users';
+//Hook para cargar las incidencias desde JSON Server
+ useEffect(() =>{
+    const obtenerIncidencias = async () => {
+        try {
+            let response = await fetch (INCIDENCIA_API_URL);
+            if(!response.ok){
+                throw new Error("HTTP Error");
+            }
+            const data = await response.json();
+            console.log(data);
+            setIncidencia(data);
+        } catch(e){
+            console.error("Error al cargar las incidencias", e);
         }
-  ])
+    }
+    const obtenerUsuario = async () => {
+        try {
+            let response = await fetch (USUARIO_API_URL);
+            if(!response.ok){
+                throw new Error("HTTP Error");
+            }
+            const data = await response.json();
+            console.log(data);
+            setUsuarios(data);
+        } catch(e){
+            console.error("Error al cargar las incidencias", e);
+        }
+    }
+
+    obtenerIncidencias();
+    obtenerUsuario();
+ },[]); //Se ejecuta una sola vez al montar el componente
 
 
-   const agregarIncidencia = (usuario_nuevo,titulo_nuevo,descripcion_nuevo,categoria_nuevo,urgencia_nuevo,
+   const agregarIncidencia = async(usuario_nuevo,titulo_nuevo,descripcion_nuevo,categoria_nuevo,urgencia_nuevo,
                             ubicacion_nuevo)=> {
+        try {
                 const fecha = new Date();
                 const year = fecha.getFullYear();
                 const month = String(fecha.getMonth() + 1).padStart(2, '0'); // meses 0-11
                 const day = String(fecha.getDate()).padStart(2, '0');
                 const fechaFormateada = `${year}-${month}-${day}`;
+    let usuarioEncontrado = usuarios.find((u)=> u.email === usuario_nuevo);
+    if(usuarioEncontrado){
         const nueva_incidencia={
-            id_incidencia: incidencias.length+1,
-            id_usuario: usuario_nuevo,
+            usuario: usuarioEncontrado,
             titulo: titulo_nuevo,
             descripcion: descripcion_nuevo,
             categoria: categoria_nuevo,
             nivel_urgencia: urgencia_nuevo,
             fecha_registro: fechaFormateada,
             estado: "Abierta",
-            ubicacion: ubicacion_nuevo
+            ubicacion: ubicacion_nuevo,
+            comentarios: []
         }
-        console.log("Nueva incidencia",nueva_incidencia);
-        setIncidencia([...incidencias, nueva_incidencia])
+        let response = await fetch(INCIDENCIA_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(nueva_incidencia)
+        });
+        if(!response.ok){
+            throw new Error(`Fallo de la petición POST. Estado HTTP: ${response.status}`);
+        }
+        let data = await response.json();
+        console.log("Nueva incidencia",data);
+        setIncidencia([...incidencias, data]);
+        } else {
+            alert("No se puede crear incidencia. Usuario no encontrado");
+            throw new Error('Error al crear incidencia. Usuario no encontrado');
+        }
+    } catch(e) {
+        console.error("Falló l apetición POST de la incidencia", e.message);
     }
+
+   }
 
   return (
     <div className='card' style={{backgroundImage: `url(${Foto})`, backgroundSize: "cover", 
@@ -157,6 +108,7 @@ function App () {
     <Footer/>
     </div>
   );
+  
   }
 
 
