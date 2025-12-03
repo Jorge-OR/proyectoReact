@@ -5,7 +5,7 @@ class Form extends React.Component {
         envioFormulario= (event)=> {
             event.preventDefault();
             const form=event.target;
-            this.props.agregarIncidencia( form.usuario.value, form.titulo.value,
+            this.props.agregarIncidencia( form.email.value, form.titulo.value,
                  form.descripcion.value, form.categoria.value, form.nivel.value, 
                  form.ubicacion.value)
         }
@@ -18,8 +18,8 @@ class Form extends React.Component {
                     
                       {/*Usuario*/}
                     <div class="elemento-form">
-                        <label className="mb-3 form-label"> Usuario </label>
-                        <input className="mb-3 form-control" type="text" name="usuario" placeholder="Ej: María" required/>
+                        <label className="mb-3 form-label"> Email </label>
+                        <input className="mb-3 form-control" type="email" name="email" placeholder="Ej: maria@gmail.com" required/>
                     </div>
                     {/*Título*/}
                     <div class="elemento-form">
