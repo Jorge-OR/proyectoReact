@@ -54,15 +54,13 @@ const USUARIO_API_URL =  'http://localhost:3004/users';
 
 useEffect(() => {
     const obtenerUsuarioLogin = () => {
-        const savedToken = localStorage.getItem("authToken");
+        const savedToken = JSON.parse(localStorage.getItem("authToken"));
         if (savedToken) {
-            const decodedToken = jwtDecode(localStorage.getItem("authToken"));
-            console.log(decodedToken);
-            if(decodedToken){
-                const user = usuarios.find((u) => u.email === decodedToken.email);
-                //Si existe el usuario en texto, lo convertimos a objeto JSON  
-                user ? setUsuarioLogin(user) : setUsuarioLogin(null);
-            }
+               
+        const user = usuarios.find((u) => u.email === savedToken.email);
+        //Si existe el usuario en texto, lo convertimos a objeto JSON  
+        user ? setUsuarioLogin(user) : setUsuarioLogin(null);
+            
         }
     }
     obtenerUsuarioLogin();

@@ -19,7 +19,7 @@ function UserRoleManagement(props) {
                         <tr key={u.id}>
                             <td>{u.nombre}</td>
                             <td>{u.correo}</td>
-                            <td>{u.rol}</td>
+                            <td>{u.rol.nombre_rol}</td>
                         </tr>
                     ))}
                 </tbody>
