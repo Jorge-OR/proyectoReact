@@ -12,14 +12,14 @@ function UserRoleManagement(props) {
                         <th>Usuario</th>
                         <th>Correo</th>
                         <th>Rol</th>
-                    </tr>
+                    </tr> 
                 </thead>
                 <tbody>
                     {props.usuarios.map((u) => (
                         <tr key={u.id}>
                             <td>{u.nombre}</td>
                             <td>{u.correo}</td>
-                            <td>{u.rol}</td>
+                            <td>{u.rol.nombre_rol}</td>
                         </tr>
                     ))}
                 </tbody>
