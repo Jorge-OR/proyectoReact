@@ -6,6 +6,9 @@ import Form from '../Form'
 import Foto from '../../img/Incidencias.png';
 import Login from '../Login';
 import {jwtDecode} from "jwt-decode";
+import Menu from './Menu';
+import { Routes, Route } from 'react-router-dom';
+import UserRoleManagement from '../UserRoleManagement';
 
 function App () {
 const [usuarios,setUsuarios] = useState([])
@@ -80,8 +83,8 @@ const inicioSesion = async (email, password) => {
             });
             if (response.ok) {
                 const data = await response.json();
-                setUsuarioLogin(data["accessToken"]);
-                localStorage.setItem("authToken", JSON.stringify(data["accessToken"]));
+                setUsuarioLogin(data["user"]);
+                localStorage.setItem("authToken", JSON.stringify(data["user"]));
                 return true; // Inicio de sesión exitoso
             } else {
                 const errorData = await response.json();
@@ -145,22 +148,19 @@ const inicioSesion = async (email, password) => {
     <Header/>
         {usuarioLogin ? (
                         <div>
-                            
+                            <Menu usuarioLogin={usuarioLogin}/>
+                            <Routes>
+                                <Route path="/" element={<p>Selecciona opción de menú</p>} />
+                                <Route path="/ver" element={<IncidentList incidencias={incidencias}/>} />
+                                <Route path="/registrar" element={<Form agregarIncidencia={agregarIncidencia}/>} />
+                                <Route path="/gestion-usuarios" element={<UserRoleManagement usuarios={usuarios}/>} />
+                            </Routes>
                             <h2 className='mb-4 text-center'>Mi aplicacion</h2>
                             <button className='position-absolute start-50 translate-middle' 
                             onClick={() => {setUsuarioLogin(null); localStorage.removeItem("authToken")}
 
                             }>Cerrar Sesión</button>
-                            <div className="container-fluid mt-4 row">
-                                
-                                <main className='col-md-8'>
-                                    <p>Esta aplicacion muestra el contenido almacenado de mi app</p>
-                                    <IncidentList incidencias={incidencias}/>
-                                </main>
-                                <aside className='col-md-4'>
-                                    <Form agregarIncidencia={agregarIncidencia}/>
-                                </aside>
-                            </div>
+                            
                             <Footer/>
                         </div>
                     ) :
