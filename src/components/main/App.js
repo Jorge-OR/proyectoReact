@@ -146,7 +146,7 @@ const inicioSesion = async (email, password) => {
     <Header/>
         {usuarioLogin ? (
                         <div>
-                            <Menu usuarioLogin={usuarioLogin}/>
+                            <Menu usuarioLogin={usuarioLogin}/> 
                             <Routes>
                                 <Route path="/" element={<p>Selecciona opción de menú</p>} />
                                 <Route path="/ver" element={<IncidentList incidencias={incidencias}/>} />
